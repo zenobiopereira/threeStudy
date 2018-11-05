@@ -21,7 +21,8 @@ renderer.setSize( window.innerWidth, window.innerHeight)
 renderer.setClearColor("#6acdff")
 
 // The camera position in/out.
-camera.position.z = 20
+camera.position.z = 30
+// camera.rotation.set(10, 0, 50)
 
 // Append itself to the body of the html.
 document.body.appendChild( renderer.domElement )
@@ -87,16 +88,66 @@ scene.add( pointLight );
 *   Those commands below will make the cube inside the scene move itself in .04 radian.
 *   axis-x left/right and axis-y up/down 
 */
-function animate () {
-    requestAnimationFrame( animate )
-    cube.position.y = -2;
-    cube.rotation.x += 0.04;
-    cube.rotation.y += 0.04;
-    wireframeCube.rotation.x -= 0.01;
-    wireframeCube.rotation.y -= 0.01;
-    wireframeCone.rotation.y -= 0.02;
-    wireframeCube.position.y = -2;
+function render () {
+    requestAnimationFrame( render )
     renderer.render( scene, camera )
 }
+render()
 
-animate()
+function animate(){
+    requestAnimationFrame( render )
+    cube.rotation.x += 0.1;
+    cube.rotation.y += 0.1;
+    wireframeCube.rotation.x -= 0.1;
+    wireframeCube.rotation.y -= 0.1;
+    wireframeCone.rotation.y -= 0.1;
+    renderer.render(scene, camera)
+
+}
+
+function inanimate(){
+    requestAnimationFrame( inanimate )
+    render(inanimate);
+    cube.rotation.x = 0;
+    cube.rotation.y = 0;
+    wireframeCube.rotation.x = 0
+    wireframeCube.rotation.y = 0;
+    wireframeCone.rotation.y = 0;
+    renderer.render(scene, camera)
+
+}
+
+window.addEventListener("wheel", function(e) {
+    if(window.scrollY === 0){
+     cube.rotation.x += 0.1;
+     cube.rotation.y += 0.1;
+     wireframeCube.rotation.x -= 0.1;
+     wireframeCube.rotation.y -= 0.1;
+     wireframeCone.rotation.y -= 0.1;
+    }
+    else {
+     cube.rotation.x -= 0.1;
+     cube.rotation.y -= 0.1;
+     wireframeCube.rotation.x += 0.1;
+     wireframeCube.rotation.y += 0.1;
+     wireframeCone.rotation.y += 0.1;
+    }
+    // console.log(pageYOffset)
+  }, true);
+
+
+
+var numbClick = false;
+
+function handlerAnimation(){
+    if(numbClick == false){
+    animate();
+        numbClick = !numbClick;
+        console.log(numbClick)
+    } else if (numbClick == true){
+        inanimate()
+        numbClick = !numbClick;
+    }
+}
+
+window.addEventListener("click", handlerAnimation, true)
