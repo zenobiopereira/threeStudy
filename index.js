@@ -82,6 +82,9 @@ var pointLight = new THREE.PointLight( 0xffffff, 1 );
 pointLight.position.set( 25, 50, 25);
 scene.add( pointLight );
 
+// This variable id serves the pourpouse to get the real time id of the animation frame ongoing and stop.
+var id = 0;
+
 /* 
 *   Like all requestAnimationFrame functions, this will be called 60 times every second,
 *   creating our smooth 60 FPS 3D render animation.
@@ -95,59 +98,61 @@ function render () {
 render()
 
 function animate(){
-    requestAnimationFrame( render )
+    id = requestAnimationFrame( animate )
     cube.rotation.x += 0.1;
     cube.rotation.y += 0.1;
     wireframeCube.rotation.x -= 0.1;
     wireframeCube.rotation.y -= 0.1;
     wireframeCone.rotation.y -= 0.1;
     renderer.render(scene, camera)
-
 }
 
-function inanimate(){
-    requestAnimationFrame( inanimate )
-    render(inanimate);
-    cube.rotation.x = 0;
-    cube.rotation.y = 0;
-    wireframeCube.rotation.x = 0
-    wireframeCube.rotation.y = 0;
-    wireframeCone.rotation.y = 0;
-    renderer.render(scene, camera)
-
+function leftTurn(){
+    cube.rotation.x += 0.1;
+    cube.rotation.y += 0.1;
+    wireframeCube.rotation.x -= 0.1;
+    wireframeCube.rotation.y -= 0.1;
+    wireframeCone.rotation.y -= 0.1;
 }
 
+function rightTurn(){
+    cube.rotation.x -= 0.1;
+    cube.rotation.y -= 0.1;
+    wireframeCube.rotation.x += 0.1;
+    wireframeCube.rotation.y += 0.1;
+    wireframeCone.rotation.y += 0.1;
+}
+
+
+// This event will turn left if mouse wheel go Up and right if mouse wheel go down.
 window.addEventListener("wheel", function(e) {
     if(window.scrollY === 0){
-     cube.rotation.x += 0.1;
-     cube.rotation.y += 0.1;
-     wireframeCube.rotation.x -= 0.1;
-     wireframeCube.rotation.y -= 0.1;
-     wireframeCone.rotation.y -= 0.1;
+        leftTurn();
     }
     else {
-     cube.rotation.x -= 0.1;
-     cube.rotation.y -= 0.1;
-     wireframeCube.rotation.x += 0.1;
-     wireframeCube.rotation.y += 0.1;
-     wireframeCone.rotation.y += 0.1;
+        rightTurn();
     }
     // console.log(pageYOffset)
-  }, true);
+  }, false);
+
+var numbClick = true;
 
 
+// This event will turn on and off the frame animation of all object.
+window.addEventListener("click", function(e){
+    e.preventDefault();
+    (numbClick) ? animate() : cancelAnimationFrame(id);
+    numbClick = !numbClick;
+    // console.log(numbClick);
+}, false)
 
-var numbClick = false;
 
-function handlerAnimation(){
-    if(numbClick == false){
-    animate();
-        numbClick = !numbClick;
-        console.log(numbClick)
-    } else if (numbClick == true){
-        inanimate()
-        numbClick = !numbClick;
+// This event will turn all the objects on the axis-x left or right based on arrow pressed on keyboard.
+window.addEventListener("keydown", function(e){
+    if(e.keyCode == 37){
+        leftTurn();
+    } else if(e.keyCode == 39){
+        rightTurn();
     }
-}
-
-window.addEventListener("click", handlerAnimation, true)
+    // console.log(e.keyCode)
+}, false);
