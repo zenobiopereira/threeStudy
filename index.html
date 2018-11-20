@@ -6,14 +6,22 @@
         <title>Three.js Study Simple App</title>
         <!--In line css to use the hole html as canvas.-->        
 		<style>
-			body { margin: 0; }
-			canvas { width: 100vw; height: 100vh }
+			body { margin: 0; padding: 0 }
+			canvas { width: 100vw; height: 3000px; position: sticky; top: 0}
+			iframe { overflow: scroll; }
 		</style>
 	</head>
-	<body>
-    <!-- CDN Link to Three.js -->
+	<body style="overflow: scroll">
+	<!-- CDN Link to Three.js -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+		<script>
+		_u = _.noConflict(); // lets call ourselves _u
+		</script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.js"></script>
+		<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 		<!-- <script type="text/javascript" src="imports/index.js"></script> -->
 		<!--reference your JS file here.-->
-    <script src="./index.js"></script>
+	<!-- <script src="./index.js" scrolling="no"></script> -->
+	<script src="./app.js" scrolling="no"></script>	
+	<div style="height: 100vh;"></div>
 	</body>
