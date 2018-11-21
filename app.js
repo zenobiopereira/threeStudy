@@ -86,6 +86,7 @@ var oldPct = 0;
 var constantMoving = 1.7;
 
 window.addEventListener("scroll", _u.throttle(function(){
+  requestAnimationFrame(handleScroll)
   let scrollHeight = window.scrollY;
   let bodyHeight = document.body.clientHeight;
   let windowHeight = window.innerHeight;
@@ -97,7 +98,7 @@ window.addEventListener("scroll", _u.throttle(function(){
   handleScroll();
   setValue();
   render();
-}, 150, {leading: false, trailing: true}),{passive: true});
+}, 5, {leading: false, trailing: true}),{passive: true});
 
 //This function could be just a call for oldPct = percent, if ComponentDidMount exists.
 function setValue (){
@@ -105,26 +106,35 @@ function setValue (){
   console.log('setValue',oldPct)
 }
 
+/* Doing the scrollbound this way, we cannot control the ease
+/ it is better to make a simple function to control the way
+/ the ease work with a example below;
+/  handleScroll = () => {
+    const finalPos = -52;
+
+    const newPosition = this.percent / 100 * finalPos;
+    this.camera.position.z += (newPosition - this.camera.position.z) / 16;
+  }
+/
+*/
 function handleScroll (){
-  // console.log('percnt', percent)
-  // console.log('HandleScrollOLD',oldPct)
+  let finalPos = 0;
+  let initialPos = -30;
 
-  if(percent === oldPct){
-    return
-  }
+  let newPosition = (percent/100) * finalPos;
 
-  if(percent > oldPct){
+  if(percent > oldPct && camera.position.z < 0){
     // console.log('if')
-    camera.position.z += constantMoving;
-  } else {
+    camera.position.z += (newPosition - camera.position.z) / 24;
+  } else if(percent < oldPct && camera.position.z > -30){
     // console.log('else')
-    camera.position.z -= constantMoving;
+    camera.position.z -= (newPosition - camera.position.z) / 24;
   }
+  console.log(camera.position.z)
 }
 
 function render () {
-  // setValue();
-  requestAnimationFrame(handleScroll)
+  // requestAnimationFrame(handleScroll)
   renderer.render(scene, camera)
 }
 
