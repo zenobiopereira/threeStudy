@@ -25,13 +25,13 @@ pointLight.position.set( 25, 50, 25);
 scene.add( pointLight );
 
 // Rezise the render with the size of view.
-// window.addEventListener( 'resize', () => {
-// 	let width = window.innerWidth
-// 	let height = window.innerHeight
-// 	renderer.setSize( width, height )
-// 	camera.aspect = width / height
-// 	camera.updateProjectionMatrix()
-// });
+window.addEventListener( 'resize', () => {
+	let width = window.innerWidth
+	let height = window.innerHeight
+	renderer.setSize( width, height )
+	camera.aspect = width / height
+	camera.updateProjectionMatrix()
+});
 
 
 var geometry = new THREE.CubeGeometry( 3, 8, 3);
@@ -83,40 +83,47 @@ planeBelow.position.set(0, -0.01, 0);
 
 var percent = 0;
 var oldPct = 0;
+var constantMoving = 1.7;
 
-window.addEventListener("wheel", _u.throttle(function(){
+window.addEventListener("scroll", _u.throttle(function(){
   let scrollHeight = window.scrollY;
   let bodyHeight = document.body.clientHeight;
   let windowHeight = window.innerHeight;
   let scrollP = scrollHeight / (bodyHeight - windowHeight);
   percent = Math.round(scrollP*100);
-  handleScroll()
+  if(percent === oldPct){
+    return
+  }
+  handleScroll();
+  setValue();
   render();
-}, 150, {'trailing': false}),{passive: true});
+}, 150, {leading: false, trailing: true}),{passive: true});
 
-var constantMoving = 0.8;
+//This function could be just a call for oldPct = percent, if ComponentDidMount exists.
+function setValue (){
+  oldPct = percent;
+  console.log('setValue',oldPct)
+}
 
 function handleScroll (){
-  // console.log('actual', percent)
-  // console.log('old', oldPct)
-  if(percent == 0 || percent == 100){
+  // console.log('percnt', percent)
+  // console.log('HandleScrollOLD',oldPct)
+
+  if(percent === oldPct){
     return
   }
 
-  if(window.scrollY > oldPct){
-    console.log('if')
+  if(percent > oldPct){
+    // console.log('if')
     camera.position.z += constantMoving;
-    oldPct = window.scrollY;
   } else {
-    console.log('else')
+    // console.log('else')
     camera.position.z -= constantMoving;
-    oldPct = window.scrollY;
-    console.log(percent)
-    console.log(oldPct)
   }
 }
 
 function render () {
+  // setValue();
   requestAnimationFrame(handleScroll)
   renderer.render(scene, camera)
 }
