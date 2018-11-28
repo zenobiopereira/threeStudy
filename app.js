@@ -7,22 +7,27 @@ camera.position.set(0, 1, -30);
 camera.lookAt(origin);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true});
+renderer.shadowMap.enabled = true;
 
 renderer.setSize( window.innerWidth, window.innerHeight);
 
-renderer.setClearColor("#ccc");
+renderer.setClearColor("#ffffe6");
 
 document.body.appendChild( renderer.domElement );
 
-//ambient white light
-var ambientLight = new THREE.AmbientLight ( 0xffffff, 0.5);
+// ambient white light
+var ambientLight = new THREE.AmbientLight ( "#ffffe6", 0.5);
+ambientLight.castShadow = true;
 scene.add( ambientLight );
 
-//Light which makes
-var pointLight = new THREE.PointLight( 0xffffff, 1 );
+
+//Almost like a sun.
+var opositeLight = new THREE.PointLight( "#ffffe6", 0.5 );
 // This set the position on the Point Light, being (y, x, z), axis-x up/down and axis-y left/right, axis-z in/out
-pointLight.position.set( 25, 50, 25);
-scene.add( pointLight );
+opositeLight.position.set( -35, 30, -90);
+opositeLight.castShadow = true;
+scene.add( opositeLight );
+
 
 // Rezise the render with the size of view.
 window.addEventListener( 'resize', () => {
@@ -34,58 +39,82 @@ window.addEventListener( 'resize', () => {
 });
 
 
+//Blue Building
 var geometry = new THREE.CubeGeometry( 3, 8, 3);
 // geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.1, 0 ));
-var material = new THREE.MeshStandardMaterial( { color: "aquamarine" });
-var buildingMesh= new THREE.Mesh( geometry, material);
+var material = new THREE.MeshStandardMaterial( { color: "blue" });
+var buildingMesh = new THREE.Mesh( geometry, material);
+buildingMesh.castShadow = true;
+buildingMesh.receiveShadow = false; 
 scene.add( buildingMesh );
 
-buildingMesh.position.set(9, 4.0, 3.8)
+buildingMesh.position.set(6, 4.0, 3.8)
 buildingMesh.rotateX(3.13);
 
+
+//Red Building
 var geometry = new THREE.CubeGeometry( 3, 8, 3);
 // geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.1, 0 ));
 var material = new THREE.MeshStandardMaterial( { color: "red" });
 var buildingMesh2= new THREE.Mesh( geometry, material);
+buildingMesh2.castShadow = true;
+buildingMesh2.receiveShadow = false; 
 scene.add( buildingMesh2);
 
-buildingMesh2.position.set(-9, 4.0, 3.8)
+buildingMesh2.position.set(-7, 4.0, 3.8)
 buildingMesh2.rotateX(3.13);
 
+//The whine path.
 var geometry = new THREE.PlaneGeometry(5, 1000, 0);
-var material = new THREE.MeshBasicMaterial({color: "#ff9911", side: THREE.DoubleSide});
+var material = new THREE.MeshStandardMaterial({color: "#990000", side: THREE.DoubleSide});
 var plane = new THREE.Mesh (geometry, material);
+plane.receiveShadow = true;
 scene.add(plane);
 
-
+//The below plane.
 var geometry = new THREE.PlaneGeometry(30, 1000, 0);
-var material = new THREE.MeshBasicMaterial({color: "#999", side: THREE.DoubleSide});
+var material = new THREE.MeshStandardMaterial({color: "#fff", side: THREE.DoubleSide});
 var planeBelow = new THREE.Mesh (geometry, material);
+planeBelow.receiveShadow = true;
 scene.add(planeBelow);
 
 
 plane.rotateX(Math.PI / 2);
-plane.position.set(0,0,0);
+plane.position.set(0,-0.01,0);
 planeBelow.rotateX( Math.PI/2);
-planeBelow.position.set(0, -0.01, 0);
+planeBelow.position.set(0, -0.02, 0);
+
+//A text made with my ASS; (that's ugly as fk)
+var text2 = document.createElement('div');
+text2.style.position = 'absolute';
+text2.style.display = 'flex';
+text2.style.justifyContent = 'center';
+text2.style.alignItems = 'center';
+text2.style.width = '400px';
+text2.style.height = '80px';
+text2.style.fontSize = "30px";
+text2.innerHTML = "Good Morning Sunshine!";
+text2.style.top = '25%';
+text2.style.left = '38%';
+document.body.appendChild(text2);
 
 
-// const orbitControls = new THREE.OrbitControls(camera, document);
-// orbitControls.autoRotate = false;
-// orbitControls.autoRotateSpeed = 10.0;
-// orbitControls.maxPolarAngle = (Math.PI/2 
+// const controls = new THREE.OrbitControls(camera);
+// controls.autoRotate = false;
+// controls.autoRotateSpeed = 10.0;
+// controls.maxPolarAngle = (Math.PI/2 
 //   - Math.PI/64
 //   );
 // Stop the orbit control of zooming in/out, just move around
-// orbitControls.enableZoom = false;
-// orbitControls.enableDamping = false;
-// orbitControls.screenSpacePanning = false;
+// controls.enableZoom = true;
+// controls.enableDamping = true;
+// controls.screenSpacePanning = true;
 
 var percent = 0;
 var oldPct = 0;
 var constantMoving = 1.7;
 
-window.addEventListener("scroll", _u.throttle(function(){
+window.addEventListener("scroll", _u.debounce(function(){
   requestAnimationFrame(handleScroll)
   let scrollHeight = window.scrollY;
   let bodyHeight = document.body.clientHeight;
@@ -98,9 +127,9 @@ window.addEventListener("scroll", _u.throttle(function(){
   handleScroll();
   setValue();
   render();
-}, 5, {leading: false, trailing: true}),{passive: true});
+}, 3, {leading: false, trailing: true}),{passive: true});
 
-//This function could be just a call for oldPct = percent, if ComponentDidMount exists.
+//This function could be just a call for oldPct = percent, if a state for oldPct exists.
 function setValue (){
   oldPct = percent;
   console.log('setValue',oldPct)
@@ -134,7 +163,8 @@ function handleScroll (){
 }
 
 function render () {
-  // requestAnimationFrame(handleScroll)
+  // requestAnimationFrame(render);
+  // controls.update();
   renderer.render(scene, camera)
 }
 

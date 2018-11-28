@@ -16,6 +16,11 @@
 		</style>
 	</head>
 	<body style="overflow: scroll">
+		<script>
+		var myBody = document.querySelector('head');
+		console.log(myBody.scrollTop)
+		myBody.scrollIntoView();
+	</script>
 	<!-- CDN Link to Three.js -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
 		<script>
@@ -27,7 +32,7 @@
 		<!--reference your JS file here.-->
 	<!-- <script src="./index.js" scrolling="no"></script> -->
 	<div style="height: 300vh; padding: 0; margin: 0;">
-	<script src="./app.js" scrolling="no"></script>	
+	<script src="./app.js" scrolling="no" id="canvasDiv"></script>	
 	</div>
 	<section>
 	<h1>CAMERA MOBILITY WITH THREE.JS</h1>
