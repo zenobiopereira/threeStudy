@@ -34,8 +34,8 @@ window.addEventListener( 'resize', () => {
 	let width = window.innerWidth
 	let height = window.innerHeight
 	renderer.setSize( width, height )
-	camera.aspect = width / height
-	camera.updateProjectionMatrix()
+  camera.aspect = width / height
+  camera.updateProjectionMatrix()
 });
 
 
@@ -83,21 +83,6 @@ plane.rotateX(Math.PI / 2);
 plane.position.set(0,-0.01,0);
 planeBelow.rotateX( Math.PI/2);
 planeBelow.position.set(0, -0.02, 0);
-
-//A text made with my ASS; (that's ugly as fk)
-var text2 = document.createElement('div');
-text2.style.position = 'absolute';
-text2.style.display = 'flex';
-text2.style.justifyContent = 'center';
-text2.style.alignItems = 'center';
-text2.style.width = '400px';
-text2.style.height = '80px';
-text2.style.fontSize = "30px";
-text2.innerHTML = "Good Morning Sunshine!";
-text2.style.top = '25%';
-text2.style.left = '38%';
-document.body.appendChild(text2);
-
 
 // const controls = new THREE.OrbitControls(camera);
 // controls.autoRotate = false;
