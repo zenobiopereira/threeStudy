@@ -38,6 +38,10 @@ window.addEventListener( 'resize', () => {
   camera.updateProjectionMatrix()
 });
 
+var loader = new THREE.GLTF2Loader();
+loader.load("C:/Users/total/Desktop/threeStudy/modelstest.glb" , object => {
+  scene.add(object.scene)
+})
 
 //Blue Building
 var geometry = new THREE.CubeGeometry( 3, 8, 3);
