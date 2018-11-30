@@ -40,6 +40,7 @@ window.addEventListener( 'resize', () => {
 
 var loader = new THREE.GLTF2Loader();
 loader.load("models/yellowStore.glb" , object => {
+  object.position.set(0, 20, 10);
   scene.add(object.scene)
 })
 
