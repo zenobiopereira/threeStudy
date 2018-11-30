@@ -89,7 +89,7 @@ plane.position.set(0,-0.01,0);
 planeBelow.rotateX( Math.PI/2);
 planeBelow.position.set(0, -0.02, 0);
 
-// const controls = new THREE.OrbitControls(camera);
+ const controls = new THREE.OrbitControls(camera);
 // controls.autoRotate = false;
 // controls.autoRotateSpeed = 10.0;
 // controls.maxPolarAngle = (Math.PI/2 
@@ -114,7 +114,7 @@ window.addEventListener("scroll", _u.debounce(function(){
   if(percent === oldPct){
     return
   }
-  handleScroll();
+//  handleScroll();
   setValue();
   render();
 }, 3, {leading: false, trailing: true}),{passive: true});
@@ -153,8 +153,8 @@ function handleScroll (){
 }
 
 function render () {
-  // requestAnimationFrame(render);
-  // controls.update();
+   requestAnimationFrame(render);
+   controls.update();
   renderer.render(scene, camera)
 }
 
