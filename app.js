@@ -39,7 +39,7 @@ window.addEventListener( 'resize', () => {
 });
 
 var loader = new THREE.GLTF2Loader();
-loader.load("C:/Users/total/Desktop/threeStudy/modelstest.glb" , object => {
+loader.load("/models/yellowStore.glb" , object => {
   scene.add(object.scene)
 })
 
