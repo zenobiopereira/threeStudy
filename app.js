@@ -40,10 +40,7 @@ window.addEventListener( 'resize', () => {
 
 var loader = new THREE.GLTF2Loader();
 loader.load("models/yellowStore.glb" , object => {
-<<<<<<< HEAD
   object.position.set(0, 20, 10);
-=======
->>>>>>> test glb
   scene.add(object.scene)
 })
 
@@ -91,12 +88,7 @@ plane.rotateX(Math.PI / 2);
 plane.position.set(0,-0.01,0);
 planeBelow.rotateX( Math.PI/2);
 planeBelow.position.set(0, -0.02, 0);
-
-<<<<<<< HEAD
- const controls = new THREE.OrbitControls(camera);
-=======
 const controls = new THREE.OrbitControls(camera);
->>>>>>> test glb
 // controls.autoRotate = false;
 // controls.autoRotateSpeed = 10.0;
 // controls.maxPolarAngle = (Math.PI/2 
@@ -121,11 +113,7 @@ window.addEventListener("scroll", _u.debounce(function(){
   if(percent === oldPct){
     return
   }
-<<<<<<< HEAD
-//  handleScroll();
-=======
   // handleScroll();
->>>>>>> test glb
   setValue();
   render();
 }, 3, {leading: false, trailing: true}),{passive: true});
@@ -164,13 +152,8 @@ function handleScroll (){
 }
 
 function render () {
-<<<<<<< HEAD
-   requestAnimationFrame(render);
-   controls.update();
-=======
   requestAnimationFrame(render);
   controls.update();
->>>>>>> test glb
   renderer.render(scene, camera)
 }
 
